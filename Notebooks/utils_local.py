@@ -123,7 +123,8 @@ GeoAxes._pcolormesh_patched = False
 
 def plot_trends(data, trends, pvals, lons, lats, 
                 vmin=-80000, vmax=80000, unit="m2/s", var="STREAM250_midlat_remove_None_1950_onward",
-               var_title="STREAM250 preprocessing=None 1950-2023"):
+               var_title="STREAM250 preprocessing=None 1950-2023",
+               save_fig=False):
     
     #data is trends
     
@@ -135,7 +136,7 @@ def plot_trends(data, trends, pvals, lons, lats,
     
     cmap = plt.get_cmap('RdBu_r')
     
-    fig, axs = plt.subplots(len(data),1, figsize=(70,8), subplot_kw={'projection': ccrs.PlateCarree()})
+    fig, axs = plt.subplots(len(data),1, figsize=(20,8), subplot_kw={'projection': ccrs.PlateCarree()})
     
     axs = axs.flatten()
     
@@ -156,7 +157,7 @@ def plot_trends(data, trends, pvals, lons, lats,
         #name=data[i].attrs["long_name"]
         bounds=data[i].attrs["bin bounds"]
         if i == 0:
-            axs[i].set_title(f"{var_title} trend for bin bounds {bounds}", 
+            axs[i].set_title(f"{var_title} trend for \n \n bin bounds {bounds}", 
                              fontsize=18)
         else:
             axs[i].set_title(f"bin bounds {bounds}", 
@@ -171,8 +172,11 @@ def plot_trends(data, trends, pvals, lons, lats,
         gl.xformatter = LONGITUDE_FORMATTER
         gl.yformatter = LATITUDE_FORMATTER
 
-        fig.colorbar(cs, ax=axs[i], fraction=0.005, pad=0.02, label=f"{unit}/y")
+        fig.colorbar(cs, ax=axs[i], fraction=0.005, pad=0.03, label=f"{unit}/y")
         
+    if save_fig:
+        plt.savefig("/scistor/ivm/the410/GolfVijf/figures_revised/Fig4_HQ.png", dpi=300)
+
     fig.tight_layout()
     plt.show()
     
